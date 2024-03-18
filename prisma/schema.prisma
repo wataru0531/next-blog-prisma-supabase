@@ -1,0 +1,38 @@
+
+
+// prismaを使う流れ
+// ①Prismaの初期化 npx prisma init 
+// prisma/schema.prismaファウルの生成。スキーマ定義
+// ↓
+// ②マイグレーションの初期化 npx prisma migrate dev --name init
+// → このスキーマを使うということをprismaに伝える
+//   Prismaはデータベースの初期スキーマを構築し、その後のスキーマの変更やマイグレーションを追跡するための基本的なファイルや構造を提供。
+//   これにより、アプリケーションの開発を始める準備が整う。
+// ↓
+// ③migration.sqlファイルが生成される
+// → この中のSQL分を使ってDBとやりとりを行う。
+//   Prismaは、データベースとのやり取りを簡素化し、
+//   開発プロセスを効率化するためのツール。Prismaを使用することで、
+//   データベースのスキーマやクエリを宣言的に定義し、Prismaが自動的に適切なSQLを生成・実行します。
+// 
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Supabaseはデフォルトでポスグレなのでこのまま
+  url      = env("DATABASE_URL")
+}
+
+
+// スキーマを定義...データ構造
+
+model Post {
+  id Int @id @default(autoincrement()) // 連番でidがつく
+  title String
+  description String
+  date DateTime @default(now()) // デフォルト値を設定する
+}
+
